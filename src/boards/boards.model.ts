@@ -2,7 +2,7 @@ export class Board{
     id:string;
     title:string;
     description:string;
-    status: ;
+    status: BoardsStatus;
 }
 
 export enum BoardsStatus{
