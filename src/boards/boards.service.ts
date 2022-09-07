@@ -15,7 +15,7 @@ export class BoardsService {
         return this.boards;
     }
 
-    createBoard(CreateBoardDto:CreateBoardDto){
+    createBoard(CreateBoardDto:CreateBoardDto) : Board{
         const board:Board = {
             id: uuid, 
             title: CreateBoardDto.title, 
@@ -26,7 +26,7 @@ export class BoardsService {
         return board;
     }
 
-    getBoard(id:string){
+    getBoard(id:string) : Board{
         return this.boards.find((Board)=> Board.id===id);
     }
     
@@ -34,14 +34,14 @@ export class BoardsService {
         this.boards = this.boards.filter((Board)=> Board.id !== id);
     }
 
-    updateBoard(id:string, CreateBoardDto:CreateBoardDto){
+    updateBoard(id:string, CreateBoardDto:CreateBoardDto) : Board{
         const board = this.getBoard(id);
         board.title = CreateBoardDto.title;
         board.description = CreateBoardDto.description;
         return board;
     }
 
-    updateBoardStatus(id:string, status:BoardsStatus){
+    updateBoardStatus(id:string, status:BoardsStatus) : Board{
         const board = this.getBoard(id);
         board.status = status;
         return board;
