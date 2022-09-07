@@ -1,0 +1,1 @@
+{"version":3,"file":"BoardResponseDto.js","sourceRoot":"","sources":["../../../src/boards/dto/BoardResponseDto.ts"],"names":[],"mappings":";;;AAEA,MAAa,gBAAgB;IAIzB,KAAK,CAAC,KAAW;QACb,IAAI,CAAC,KAAK,GAAG,KAAK,CAAC,KAAK,CAAC;QACzB,IAAI,CAAC,WAAW,GAAG,IAAI,CAAC,WAAW,CAAC;IACxC,CAAC;CACJ;AARD,4CAQC"}
