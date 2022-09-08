@@ -1,14 +1,14 @@
 export class User{
     id:string;
-    title:string;
+    username:string;
     password:string;
-    role: ROLE; 
+    role: Status; 
     email: string;
 
 
 }
 
-export enum ROLE{
+export enum Status{
     USER = "ROLE_USER",
     MANAGER = "ROLE_MANAGER",
     ADMIN = "ROLE_ADMIN",
