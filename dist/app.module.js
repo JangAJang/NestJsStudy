@@ -9,14 +9,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const boards_module_1 = require("./boards/boards.module");
-const auth_module_1 = require("./auth/auth.module");
-const auth_1 = require("./auth");
+const user_module_1 = require("./user/user.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [boards_module_1.BoardsModule, auth_module_1.AuthModule],
-        providers: [auth_1.Auth],
+        imports: [boards_module_1.BoardsModule, user_module_1.UserModule],
     })
 ], AppModule);
 exports.AppModule = AppModule;

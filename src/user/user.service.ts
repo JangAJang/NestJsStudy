@@ -24,17 +24,22 @@ export class UserService {
                 
             }
             this.users.push(register);
-
             return register;
         }
         else throw new MethodNotAllowedException();
     }
 
     findUser(id:string) : User{
-        return this.users.find(id);
+        return this.users.find((User)=> User.id === id);
     }
 
-    
+    findUserByUsername(username:string) : User{
+        const user:User = this.users.find((User)=> User.username === username);
+        return user;
+    }
 
-    
+    findUserByEmail(email:string) : User{
+        const user:User = this.users.find((User)=> User.username === email);
+        return user;
+    }
 }
