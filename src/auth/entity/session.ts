@@ -1,5 +1,5 @@
+import { Member } from "src/member/entity/member";
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Member } from "./member";
 
 @Entity()
 export class Session {

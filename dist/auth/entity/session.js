@@ -11,8 +11,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var Session_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Session = void 0;
+const member_1 = require("../../member/entity/member");
 const typeorm_1 = require("typeorm");
-const member_1 = require("./member");
 let Session = Session_1 = class Session {
     constructor(id, expiresAt, member) {
         this.id = id;

@@ -9,10 +9,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthModule = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
-const member_1 = require("./entity/member");
 const auth_service_1 = require("./auth.service");
 const auth_controller_1 = require("./auth.controller");
 const session_1 = require("./entity/session");
+const member_1 = require("../member/entity/member");
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;

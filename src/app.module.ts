@@ -4,8 +4,8 @@ import { AppService } from "./app.service";
 import { ConfigModule } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { AuthModule } from "./auth/auth.module";
-import { Member } from "./auth/entity/member";
 import { Session } from "./auth/entity/session";
+import { Member } from "./member/entity/member";
 
 @Module({
   imports: [

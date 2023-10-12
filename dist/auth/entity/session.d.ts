@@ -1,4 +1,4 @@
-import { Member } from "./member";
+import { Member } from "src/member/entity/member";
 export declare class Session {
     id: number;
     expiresAt: Date;

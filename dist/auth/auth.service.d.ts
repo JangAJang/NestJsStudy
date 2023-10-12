@@ -1,6 +1,6 @@
-import { Member } from "./entity/member";
 import { Repository } from "typeorm";
 import { Session } from "./entity/session";
+import { Member } from "src/member/entity/member";
 export declare class AuthService {
     private memberRepository;
     private sessionRepository;

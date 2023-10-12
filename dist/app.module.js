@@ -13,8 +13,8 @@ const app_service_1 = require("./app.service");
 const config_1 = require("@nestjs/config");
 const typeorm_1 = require("@nestjs/typeorm");
 const auth_module_1 = require("./auth/auth.module");
-const member_1 = require("./auth/entity/member");
 const session_1 = require("./auth/entity/session");
+const member_1 = require("./member/entity/member");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
