@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AuthController } from './auth/auth.controller';
-import { AuthService } from './auth/auth.service';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from './auth/auth.module';
+import { Member } from './auth/entity/member';
 
 @Module({
   imports: [ConfigModule.forRoot(), 
@@ -15,10 +15,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     username: process.env.DATABASE_USER,
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE,
-    entities: [],
+    entities: [Member],
     synchronize: true,
-  }),],
-  controllers: [AppController, AuthController],
-  providers: [AppService, AuthService],
+  }), AuthModule,],
+  controllers: [AppController,],
+  providers: [AppService, ],
 })
 export class AppModule {}

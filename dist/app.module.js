@@ -10,10 +10,10 @@ exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
-const auth_controller_1 = require("./auth/auth.controller");
-const auth_service_1 = require("./auth/auth.service");
 const config_1 = require("@nestjs/config");
 const typeorm_1 = require("@nestjs/typeorm");
+const auth_module_1 = require("./auth/auth.module");
+const member_1 = require("./auth/entity/member");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -27,11 +27,11 @@ exports.AppModule = AppModule = __decorate([
                 username: process.env.DATABASE_USER,
                 password: process.env.DATABASE_PASSWORD,
                 database: process.env.DATABASE,
-                entities: [],
+                entities: [member_1.Member],
                 synchronize: true,
-            }),],
-        controllers: [app_controller_1.AppController, auth_controller_1.AuthController],
-        providers: [app_service_1.AppService, auth_service_1.AuthService],
+            }), auth_module_1.AuthModule,],
+        controllers: [app_controller_1.AppController,],
+        providers: [app_service_1.AppService,],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map
