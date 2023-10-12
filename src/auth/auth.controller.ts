@@ -13,7 +13,17 @@ export class AuthController {
             await this.authService.register(registerRequest);
             return  { message: '회원가입이 성공했습니다.' };
         }catch(e) {
-            return { message: '회원가입 에러', error: e.message };
+            return { error: e.message };
+        }
+    }
+
+    @Post('signIn')
+    public async signIn(@Body() signInRequest: SignInRequest) {
+        try{
+            await this.authService.signIn(signInRequest);
+            return  { message: '로그인에 성공했습니다.' };
+        }catch(e) {
+            return { error: e.message };
         }
     }
 }

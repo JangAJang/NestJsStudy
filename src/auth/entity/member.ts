@@ -22,6 +22,10 @@ export class Member {
         this.password = password;
     }
 
+    isRightPassword(password:string) {
+        return this.password === password;
+    }
+
     static from(registerRequest:RegisterRequest) {
         return Member.of(registerRequest.username, registerRequest.nickname, registerRequest.password);
     }
