@@ -22,11 +22,17 @@ let AuthService = class AuthService {
         this.memberRepository = memberRepository;
     }
     async register(registerRequest) {
-        if (validateRegister(registerRequest)) {
-            this.memberRepository.save(member_1.Member.from(registerRequest));
-            return;
+        await this.validateRegister(registerRequest);
+        await this.memberRepository.save(member_1.Member.from(registerRequest));
+    }
+    async validateRegister(registerRequest) {
+        if (await this.memberRepository.findOneBy({ username: registerRequest.username })) {
+            throw new Error("이미 사용중인 아이디입니다.");
         }
-        throw new Error("회원가입 에러");
+        if (await this.memberRepository.findOneBy({ username: registerRequest.username }))
+            throw new Error("이미 사용중인 닉네임입니다.");
+        if (!validatePassword(registerRequest))
+            throw new Error("비밀번호가 서로 일치하지 않습니다.");
     }
 };
 exports.AuthService = AuthService;
@@ -35,7 +41,7 @@ exports.AuthService = AuthService = __decorate([
     __param(0, (0, typeorm_1.InjectRepository)(member_1.Member)),
     __metadata("design:paramtypes", [typeorm_2.Repository])
 ], AuthService);
-const validateRegister = (registerRequest) => {
+const validatePassword = (registerRequest) => {
     return registerRequest.password === registerRequest.passwordCheck;
 };
 //# sourceMappingURL=auth.service.js.map

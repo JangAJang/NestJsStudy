@@ -4,4 +4,5 @@ export declare class AuthService {
     private memberRepository;
     constructor(memberRepository: Repository<Member>);
     register(registerRequest: RegisterRequest): Promise<any>;
+    private validateRegister;
 }

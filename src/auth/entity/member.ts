@@ -4,16 +4,16 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 export class Member {
 
     @PrimaryGeneratedColumn()
-    private readonly id:number;
+     readonly id:number;
 
     @Column()
-    private readonly username:string;
+     readonly username:string;
 
     @Column()
-    private readonly nickname:string;
+     readonly nickname:string;
 
     @Column()
-    private readonly password:string;
+     readonly password:string;
 
     constructor(id:number, username:string, nickname:string, password:string) {
         this.id = id;

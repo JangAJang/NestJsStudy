@@ -9,15 +9,23 @@ export class AuthService {
     constructor(@InjectRepository(Member) private memberRepository:Repository<Member>){}
 
     public async register(registerRequest: RegisterRequest):Promise<any> {
-        if(validateRegister(registerRequest)) {
-            this.memberRepository.save(Member.from(registerRequest));
-            return;
-        }
+        await this.validateRegister(registerRequest)
+        await this.memberRepository.save(Member.from(registerRequest));
+    }
 
-        throw new Error("회원가입 에러");
+    private async validateRegister(registerRequest: RegisterRequest) {
+        if(await this.memberRepository.findOneBy({username:registerRequest.username})) {
+            throw new Error("이미 사용중인 아이디입니다.")
+        }
+        
+        if(await this.memberRepository.findOneBy({username:registerRequest.username}))
+            throw new Error("이미 사용중인 닉네임입니다.");
+
+        if(!validatePassword(registerRequest))
+            throw new Error("비밀번호가 서로 일치하지 않습니다.");
     }
 }
 
-const validateRegister = (registerRequest:RegisterRequest) => {
+const validatePassword = (registerRequest:RegisterRequest) => {
     return registerRequest.password === registerRequest.passwordCheck;
 }
