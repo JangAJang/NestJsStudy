@@ -22,6 +22,10 @@ export class Member {
         this.password = password;
     }
 
+    static from(registerRequest:RegisterRequest) {
+        return Member.of(registerRequest.username, registerRequest.nickname, registerRequest.password);
+    }
+
     static of(username:string, nickname:string, password:string) {
         return new Member(undefined, username, nickname, password);
     }
