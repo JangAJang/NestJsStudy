@@ -22,23 +22,43 @@ let AuthController = class AuthController {
     async register(registerRequest) {
         try {
             await this.authService.register(registerRequest);
-            return { message: '회원가입이 성공했습니다.' };
+            return { message: "회원가입이 성공했습니다." };
         }
         catch (e) {
-            return { message: '회원가입 에러', error: e.message };
+            return { error: e.message };
+        }
+    }
+    async signIn(signInRequest, response) {
+        try {
+            response.cookie("tester", await this.authService.signIn(signInRequest), {
+                httpOnly: true,
+            });
+            response.send({ message: "로그인에 성공했습니다." });
+            return;
+        }
+        catch (e) {
+            return { error: e.message };
         }
     }
 };
 exports.AuthController = AuthController;
 __decorate([
-    (0, common_1.Post)('register'),
+    (0, common_1.Post)("register"),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "register", null);
+__decorate([
+    (0, common_1.Post)("signIn"),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "signIn", null);
 exports.AuthController = AuthController = __decorate([
-    (0, common_1.Controller)('auth'),
+    (0, common_1.Controller)("auth"),
     __metadata("design:paramtypes", [auth_service_1.AuthService])
 ], AuthController);
 //# sourceMappingURL=auth.controller.js.map

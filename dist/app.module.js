@@ -14,24 +14,28 @@ const config_1 = require("@nestjs/config");
 const typeorm_1 = require("@nestjs/typeorm");
 const auth_module_1 = require("./auth/auth.module");
 const member_1 = require("./auth/entity/member");
+const session_1 = require("./auth/entity/session");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [config_1.ConfigModule.forRoot(),
+        imports: [
+            config_1.ConfigModule.forRoot(),
             typeorm_1.TypeOrmModule.forRoot({
-                type: 'mysql',
-                host: 'localhost',
+                type: "mysql",
+                host: "localhost",
                 port: parseInt(process.env.DATABASE_PORT, 10),
                 username: process.env.DATABASE_USER,
                 password: process.env.DATABASE_PASSWORD,
                 database: process.env.DATABASE,
-                entities: [member_1.Member],
+                entities: [member_1.Member, session_1.Session],
                 synchronize: true,
-            }), auth_module_1.AuthModule,],
-        controllers: [app_controller_1.AppController,],
-        providers: [app_service_1.AppService,],
+            }),
+            auth_module_1.AuthModule,
+        ],
+        controllers: [app_controller_1.AppController],
+        providers: [app_service_1.AppService],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

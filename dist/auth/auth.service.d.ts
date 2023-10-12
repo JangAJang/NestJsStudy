@@ -1,8 +1,11 @@
-import { Member } from './entity/member';
-import { Repository } from 'typeorm';
+import { Member } from "./entity/member";
+import { Repository } from "typeorm";
+import { Session } from "./entity/session";
 export declare class AuthService {
     private memberRepository;
-    constructor(memberRepository: Repository<Member>);
-    register(registerRequest: RegisterRequest): Promise<any>;
+    private sessionRepository;
+    constructor(memberRepository: Repository<Member>, sessionRepository: Repository<Session>);
+    register(registerRequest: RegisterRequest): Promise<void>;
+    signIn(signInRequest: SignInRequest): Promise<any>;
     private validateRegister;
 }

@@ -19,6 +19,9 @@ let Member = Member_1 = class Member {
         this.nickname = nickname;
         this.password = password;
     }
+    isRightPassword(password) {
+        return this.password === password;
+    }
     static from(registerRequest) {
         return Member_1.of(registerRequest.username, registerRequest.nickname, registerRequest.password);
     }

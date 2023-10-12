@@ -1,4 +1,5 @@
-import { AuthService } from './auth.service';
+import { AuthService } from "./auth.service";
+import { Response } from "express";
 export declare class AuthController {
     private authService;
     constructor(authService: AuthService);
@@ -6,7 +7,10 @@ export declare class AuthController {
         message: string;
         error?: undefined;
     } | {
-        message: string;
+        error: any;
+        message?: undefined;
+    }>;
+    signIn(signInRequest: SignInRequest, response: Response): Promise<{
         error: any;
     }>;
 }

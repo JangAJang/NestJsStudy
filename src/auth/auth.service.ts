@@ -1,41 +1,64 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Member } from './entity/member';
-import { Repository } from 'typeorm';
+import { BadRequestException, Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Member } from "./entity/member";
+import { Repository } from "typeorm";
+import * as bcrypt from "bcrypt";
+import { Session } from "./entity/session";
 
 @Injectable()
 export class AuthService {
+  constructor(
+    @InjectRepository(Member) private memberRepository: Repository<Member>,
+    @InjectRepository(Session) private sessionRepository: Repository<Session>
+  ) {}
 
-    constructor(@InjectRepository(Member) private memberRepository:Repository<Member>){}
+  public async register(registerRequest: RegisterRequest): Promise<void> {
+    await this.validateRegister(registerRequest);
+    registerRequest.password = await bcrypt.hash(
+      registerRequest.password,
+      parseInt(process.env.SALT, 10)
+    );
+    await this.memberRepository.save(Member.from(registerRequest));
+  }
 
-    public async register(registerRequest: RegisterRequest):Promise<any> {
-        await this.validateRegister(registerRequest)
-        await this.memberRepository.save(Member.from(registerRequest));
+  public async signIn(signInRequest: SignInRequest): Promise<any> {
+    const foundMember = await this.memberRepository.findOneBy({
+      username: signInRequest.username,
+    });
+
+    if (await bcrypt.compare(signInRequest.password, foundMember.password)) {
+      const session = await this.sessionRepository.save(
+        Session.byMember(foundMember)
+      );
+      return session.id;
     }
 
-    public async signIn(signInRequest: SignInRequest):Promise<any> {
-        const foundMember = await this.memberRepository.findOneBy({username:signInRequest.username});
+    throw new BadRequestException(
+      "로그인에 실패했습니다. 아이디와 비밀번호를 다시 확인해주세요."
+    );
+  }
 
-        if(foundMember.isRightPassword(signInRequest.password)) {
-            return;
-        }
-
-        throw new Error("로그인에 실패했습니다. 아이디와 비밀번호를 다시 확인해주세요.");
+  private async validateRegister(registerRequest: RegisterRequest) {
+    if (
+      await this.memberRepository.findOneBy({
+        username: registerRequest.username,
+      })
+    ) {
+      throw new BadRequestException("이미 사용중인 아이디입니다.");
     }
 
-    private async validateRegister(registerRequest: RegisterRequest) {
-        if(await this.memberRepository.findOneBy({username:registerRequest.username})) {
-            throw new Error("이미 사용중인 아이디입니다.")
-        }
-        
-        if(await this.memberRepository.findOneBy({username:registerRequest.username}))
-            throw new Error("이미 사용중인 닉네임입니다.");
+    if (
+      await this.memberRepository.findOneBy({
+        username: registerRequest.username,
+      })
+    )
+      throw new BadRequestException("이미 사용중인 닉네임입니다.");
 
-        if(!validatePassword(registerRequest))
-            throw new Error("비밀번호가 서로 일치하지 않습니다.");
-    }
+    if (!validatePassword(registerRequest))
+      throw new BadRequestException("비밀번호가 서로 일치하지 않습니다.");
+  }
 }
 
-const validatePassword = (registerRequest:RegisterRequest) => {
-    return registerRequest.password === registerRequest.passwordCheck;
-}
+const validatePassword = (registerRequest: RegisterRequest) => {
+  return registerRequest.password === registerRequest.passwordCheck;
+};

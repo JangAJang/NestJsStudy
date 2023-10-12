@@ -17,29 +17,49 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const member_1 = require("./entity/member");
 const typeorm_2 = require("typeorm");
+const bcrypt = require("bcrypt");
+const session_1 = require("./entity/session");
 let AuthService = class AuthService {
-    constructor(memberRepository) {
+    constructor(memberRepository, sessionRepository) {
         this.memberRepository = memberRepository;
+        this.sessionRepository = sessionRepository;
     }
     async register(registerRequest) {
         await this.validateRegister(registerRequest);
+        registerRequest.password = await bcrypt.hash(registerRequest.password, parseInt(process.env.SALT, 10));
         await this.memberRepository.save(member_1.Member.from(registerRequest));
     }
-    async validateRegister(registerRequest) {
-        if (await this.memberRepository.findOneBy({ username: registerRequest.username })) {
-            throw new Error("이미 사용중인 아이디입니다.");
+    async signIn(signInRequest) {
+        const foundMember = await this.memberRepository.findOneBy({
+            username: signInRequest.username,
+        });
+        if (await bcrypt.compare(signInRequest.password, foundMember.password)) {
+            const session = await this.sessionRepository.save(session_1.Session.byMember(foundMember));
+            return session.id;
         }
-        if (await this.memberRepository.findOneBy({ username: registerRequest.username }))
-            throw new Error("이미 사용중인 닉네임입니다.");
+        throw new common_1.BadRequestException("로그인에 실패했습니다. 아이디와 비밀번호를 다시 확인해주세요.");
+    }
+    async validateRegister(registerRequest) {
+        if (await this.memberRepository.findOneBy({
+            username: registerRequest.username,
+        })) {
+            throw new common_1.BadRequestException("이미 사용중인 아이디입니다.");
+        }
+        if (await this.memberRepository.findOneBy({
+            username: registerRequest.username,
+        }))
+            throw new common_1.BadRequestException("이미 사용중인 닉네임입니다.");
         if (!validatePassword(registerRequest))
-            throw new Error("비밀번호가 서로 일치하지 않습니다.");
+            throw new common_1.BadRequestException("비밀번호가 서로 일치하지 않습니다.");
     }
 };
 exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(member_1.Member)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __param(1, (0, typeorm_1.InjectRepository)(session_1.Session)),
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository])
 ], AuthService);
 const validatePassword = (registerRequest) => {
     return registerRequest.password === registerRequest.passwordCheck;
