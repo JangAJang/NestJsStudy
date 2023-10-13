@@ -4,7 +4,7 @@ import {
   UnauthorizedException,
 } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { DataSource, Repository } from "typeorm";
+import { Repository } from "typeorm";
 import * as bcrypt from "bcrypt";
 import { Session } from "./entity/session";
 import { Member } from "src/member/entity/member";
