@@ -40,6 +40,15 @@ let AuthController = class AuthController {
             return { error: e.message };
         }
     }
+    async logout(request) {
+        try {
+            const [cookieName, cookieValue] = request.headers.cookie.split("=");
+            await this.authService.logout(Number(cookieValue));
+        }
+        catch (e) {
+            return { error: e.message };
+        }
+    }
 };
 exports.AuthController = AuthController;
 __decorate([
@@ -57,6 +66,13 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "signIn", null);
+__decorate([
+    (0, common_1.Post)("logout"),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "logout", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)("auth"),
     __metadata("design:paramtypes", [auth_service_1.AuthService])

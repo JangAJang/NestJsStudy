@@ -31,6 +31,7 @@ exports.AppModule = AppModule = __decorate([
                 database: process.env.DATABASE,
                 entities: [member_1.Member, session_1.Session],
                 synchronize: true,
+                autoLoadEntities: true,
             }),
             auth_module_1.AuthModule,
         ],

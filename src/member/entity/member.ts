@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Session } from "src/auth/entity/session";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Member {
@@ -13,6 +14,9 @@ export class Member {
 
   @Column()
   readonly password: string;
+
+  @OneToMany((type) => Session, (session) => session.member)
+  readonly sessions: Session[];
 
   constructor(
     id: number,

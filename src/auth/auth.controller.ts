@@ -1,6 +1,6 @@
-import { Body, Controller, Post, Res } from "@nestjs/common";
+import { Body, Controller, Post, Req, Res } from "@nestjs/common";
 import { AuthService } from "./auth.service";
-import { Response } from "express";
+import { Request, Response } from "express";
 
 @Controller("auth")
 export class AuthController {
@@ -27,6 +27,16 @@ export class AuthController {
       });
       response.send({ message: "로그인에 성공했습니다." });
       return;
+    } catch (e) {
+      return { error: e.message };
+    }
+  }
+
+  @Post("logout")
+  public async logout(@Req() request: Request) {
+    try {
+      const [cookieName, cookieValue] = request.headers.cookie.split("=");
+      await this.authService.logout(Number(cookieValue));
     } catch (e) {
       return { error: e.message };
     }

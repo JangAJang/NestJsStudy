@@ -9,7 +9,7 @@ export class Session {
   @Column()
   expiresAt: Date;
 
-  @ManyToOne(() => Member)
+  @ManyToOne(() => Member, (member) => member.sessions)
   member: Member;
 
   constructor(id: number, expiresAt: Date, member: Member) {

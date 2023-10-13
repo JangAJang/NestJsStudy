@@ -1,6 +1,10 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { DataSource, Repository } from "typeorm";
 import * as bcrypt from "bcrypt";
 import { Session } from "./entity/session";
 import { Member } from "src/member/entity/member";
@@ -36,6 +40,21 @@ export class AuthService {
     throw new BadRequestException(
       "로그인에 실패했습니다. 아이디와 비밀번호를 다시 확인해주세요."
     );
+  }
+
+  public async logout(sessionId: number): Promise<void> {
+    const foundSession = await this.sessionRepository.findOneBy({
+      id: sessionId,
+    });
+
+    if (!foundSession)
+      throw new UnauthorizedException("로그인 후 이용해주세요.");
+
+    const membersSessions = await this.sessionRepository
+      .createQueryBuilder("session")
+      .leftJoinAndSelect("session.member", "member")
+      .getMany();
+    await this.sessionRepository.remove(membersSessions);
   }
 
   private async validateRegister(registerRequest: RegisterRequest) {

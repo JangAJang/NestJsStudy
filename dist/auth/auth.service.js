@@ -39,6 +39,18 @@ let AuthService = class AuthService {
         }
         throw new common_1.BadRequestException("로그인에 실패했습니다. 아이디와 비밀번호를 다시 확인해주세요.");
     }
+    async logout(sessionId) {
+        const foundSession = await this.sessionRepository.findOneBy({
+            id: sessionId,
+        });
+        if (!foundSession)
+            throw new common_1.UnauthorizedException("로그인 후 이용해주세요.");
+        const membersSessions = await this.sessionRepository
+            .createQueryBuilder("session")
+            .leftJoinAndSelect("session.member", "member")
+            .getMany();
+        await this.sessionRepository.remove(membersSessions);
+    }
     async validateRegister(registerRequest) {
         if (await this.memberRepository.findOneBy({
             username: registerRequest.username,

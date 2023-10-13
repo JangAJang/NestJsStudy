@@ -19,6 +19,7 @@ import { Member } from "./member/entity/member";
       database: process.env.DATABASE,
       entities: [Member, Session],
       synchronize: true,
+      autoLoadEntities: true,
     }),
     AuthModule,
   ],

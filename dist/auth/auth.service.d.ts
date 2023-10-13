@@ -7,5 +7,6 @@ export declare class AuthService {
     constructor(memberRepository: Repository<Member>, sessionRepository: Repository<Session>);
     register(registerRequest: RegisterRequest): Promise<void>;
     signIn(signInRequest: SignInRequest): Promise<any>;
+    logout(sessionId: number): Promise<void>;
     private validateRegister;
 }

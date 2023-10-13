@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var Member_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Member = void 0;
+const session_1 = require("../../auth/entity/session");
 const typeorm_1 = require("typeorm");
 let Member = Member_1 = class Member {
     constructor(id, username, nickname, password) {
@@ -46,6 +47,10 @@ __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], Member.prototype, "password", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)((type) => session_1.Session, (session) => session.member),
+    __metadata("design:type", Array)
+], Member.prototype, "sessions", void 0);
 exports.Member = Member = Member_1 = __decorate([
     (0, typeorm_1.Entity)(),
     __metadata("design:paramtypes", [Number, String, String, String])
