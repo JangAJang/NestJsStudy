@@ -73,7 +73,4 @@ exports.AuthService = AuthService = __decorate([
     __metadata("design:paramtypes", [typeorm_2.Repository,
         typeorm_2.Repository])
 ], AuthService);
-const validatePassword = (registerRequest) => {
-    return registerRequest.password === registerRequest.passwordCheck;
-};
 //# sourceMappingURL=auth.service.js.map

@@ -1,5 +1,11 @@
 import { Member } from "src/member/entity/member";
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 
 @Entity()
 export class Session {
@@ -10,6 +16,7 @@ export class Session {
   expiresAt: Date;
 
   @ManyToOne(() => Member, (member) => member.sessions)
+  @JoinColumn({ name: "memberId", referencedColumnName: "id" })
   member: Member;
 
   constructor(id: number, expiresAt: Date, member: Member) {

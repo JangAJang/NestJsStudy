@@ -48,7 +48,7 @@ __decorate([
     __metadata("design:type", String)
 ], Member.prototype, "password", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)((type) => session_1.Session, (session) => session.member),
+    (0, typeorm_1.OneToMany)(() => session_1.Session, (session) => session.member),
     __metadata("design:type", Array)
 ], Member.prototype, "sessions", void 0);
 exports.Member = Member = Member_1 = __decorate([

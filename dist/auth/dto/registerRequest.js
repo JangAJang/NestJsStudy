@@ -2,9 +2,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RegisterRequest = void 0;
 class RegisterRequest {
+    constructor(username, nickname, password, passwordCheck) {
+        this.username = username;
+        this.nickname = nickname;
+        this.password = password;
+        this.passwordCheck = passwordCheck;
+    }
     isValidPassword() {
-        console.log(this.password);
-        console.log(this.passwordCheck);
         return this.password === this.passwordCheck;
     }
 }

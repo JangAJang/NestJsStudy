@@ -36,6 +36,7 @@ __decorate([
 ], Session.prototype, "expiresAt", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => member_1.Member, (member) => member.sessions),
+    (0, typeorm_1.JoinColumn)({ name: "memberId", referencedColumnName: "id" }),
     __metadata("design:type", member_1.Member)
 ], Session.prototype, "member", void 0);
 exports.Session = Session = Session_1 = __decorate([

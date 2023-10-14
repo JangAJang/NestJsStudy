@@ -16,7 +16,7 @@ export class Member {
   @Column()
   readonly password: string;
 
-  @OneToMany((type) => Session, (session) => session.member)
+  @OneToMany(() => Session, (session) => session.member)
   readonly sessions: Session[];
 
   constructor(
