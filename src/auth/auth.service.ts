@@ -8,6 +8,7 @@ import { Repository } from "typeorm";
 import * as bcrypt from "bcrypt";
 import { Session } from "./entity/session";
 import { Member } from "src/member/entity/member";
+import { RegisterRequest } from "./dto/registerRequest";
 
 @Injectable()
 export class AuthService {
@@ -73,11 +74,7 @@ export class AuthService {
     )
       throw new BadRequestException("이미 사용중인 닉네임입니다.");
 
-    if (!validatePassword(registerRequest))
+    if (!registerRequest.isValidPassword())
       throw new BadRequestException("비밀번호가 서로 일치하지 않습니다.");
   }
 }
-
-const validatePassword = (registerRequest: RegisterRequest) => {
-  return registerRequest.password === registerRequest.passwordCheck;
-};

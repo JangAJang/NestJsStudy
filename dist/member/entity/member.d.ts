@@ -1,3 +1,4 @@
+import { RegisterRequest } from "src/auth/dto/registerRequest";
 import { Session } from "src/auth/entity/session";
 export declare class Member {
     readonly id: number;

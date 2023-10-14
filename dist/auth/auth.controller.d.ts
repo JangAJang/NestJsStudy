@@ -1,5 +1,6 @@
 import { AuthService } from "./auth.service";
 import { Request, Response } from "express";
+import { RegisterRequest } from "./dto/registerRequest";
 export declare class AuthController {
     private authService;
     constructor(authService: AuthService);

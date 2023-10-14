@@ -61,7 +61,7 @@ let AuthService = class AuthService {
             username: registerRequest.username,
         }))
             throw new common_1.BadRequestException("이미 사용중인 닉네임입니다.");
-        if (!validatePassword(registerRequest))
+        if (!registerRequest.isValidPassword())
             throw new common_1.BadRequestException("비밀번호가 서로 일치하지 않습니다.");
     }
 };

@@ -1,3 +1,4 @@
+import { RegisterRequest } from "src/auth/dto/registerRequest";
 import { Session } from "src/auth/entity/session";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
