@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  Inject,
   Injectable,
   UnauthorizedException,
 } from "@nestjs/common";
@@ -9,11 +10,12 @@ import * as bcrypt from "bcrypt";
 import { Session } from "./entity/session";
 import { Member } from "src/member/entity/member";
 import { RegisterRequest } from "./dto/registerRequest";
+import { MemberRepository } from '../member/repository/member.repository';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(Member) private memberRepository: Repository<Member>,
+    @Inject() private memberRepository:MemberRepository,
     @InjectRepository(Session) private sessionRepository: Repository<Session>
   ) {}
 
@@ -27,15 +29,10 @@ export class AuthService {
   }
 
   public async signIn(signInRequest: SignInRequest): Promise<any> {
-    const foundMember = await this.memberRepository.findOneBy({
-      username: signInRequest.username,
-    });
+    const foundMember = await this.memberRepository.findByUsername(signInRequest.username);
 
-    if (await bcrypt.compare(signInRequest.password, foundMember.password)) {
-      const session = await this.sessionRepository.save(
-        Session.byMember(foundMember)
-      );
-      return session.id;
+    if (this.isRightPassword(foundMember, signInRequest)) {
+      return (await this.createMembersSession(foundMember)).id;
     }
 
     throw new BadRequestException(
@@ -58,20 +55,19 @@ export class AuthService {
     await this.sessionRepository.remove(membersSessions);
   }
 
-  private async validateRegister(registerRequest: RegisterRequest) {
-    if (
-      await this.memberRepository.findOneBy({
-        username: registerRequest.username,
-      })
-    ) {
-      throw new BadRequestException("이미 사용중인 아이디입니다.");
-    }
+  private async isRightPassword( foundMember: Member,signInRequest: SignInRequest ) {
+    return await bcrypt.compare(signInRequest.password, foundMember.password);
+  }
 
-    if (
-      await this.memberRepository.findOneBy({
-        username: registerRequest.username,
-      })
-    )
+  private async createMembersSession(member:Member):Promise<Session> {
+    return await this.sessionRepository.save(Session.byMember(member));
+  }
+
+  private async validateRegister(registerRequest: RegisterRequest) {
+    if (this.memberRepository.findByUsername(registerRequest.username))
+      throw new BadRequestException("이미 사용중인 아이디입니다.");
+
+    if (await this.memberRepository.findByNickname(registerRequest.nickname))
       throw new BadRequestException("이미 사용중인 닉네임입니다.");
 
     if (!registerRequest.isValidPassword())
