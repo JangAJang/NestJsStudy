@@ -4,19 +4,18 @@ import {
   Injectable,
   UnauthorizedException,
 } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
 import * as bcrypt from "bcrypt";
 import { Session } from "./entity/session";
 import { Member } from "src/member/entity/member";
 import { RegisterRequest } from "./dto/registerRequest";
 import { MemberRepository } from '../member/repository/member.repository';
+import { SessionRepository } from "./repository/session.repository";
 
 @Injectable()
 export class AuthService {
   constructor(
     @Inject() private memberRepository:MemberRepository,
-    @InjectRepository(Session) private sessionRepository: Repository<Session>
+    @Inject() private sessionRepository:SessionRepository,
   ) {}
 
   public async register(registerRequest: RegisterRequest): Promise<void> {
