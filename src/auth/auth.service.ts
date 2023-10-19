@@ -40,17 +40,12 @@ export class AuthService {
   }
 
   public async logout(sessionId: number): Promise<void> {
-    const foundSession = await this.sessionRepository.findOneBy({
-      id: sessionId,
-    });
+    const foundSession = await this.sessionRepository.findById(sessionId);
 
     if (!foundSession)
       throw new UnauthorizedException("로그인 후 이용해주세요.");
 
-    const membersSessions = await this.sessionRepository
-      .createQueryBuilder("session")
-      .leftJoinAndSelect("session.member", "member")
-      .getMany();
+    const membersSessions = await this.sessionRepository.findSessionsWithSameMember(sessionId);
     await this.sessionRepository.remove(membersSessions);
   }
 
