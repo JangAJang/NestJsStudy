@@ -1,6 +1,5 @@
 import {
   BadRequestException,
-  Inject,
   Injectable,
   UnauthorizedException,
 } from "@nestjs/common";
@@ -14,8 +13,8 @@ import { SessionRepository } from "./repository/session.repository";
 @Injectable()
 export class AuthService {
   constructor(
-    @Inject() private memberRepository: MemberRepository,
-    @Inject() private sessionRepository: SessionRepository
+    private memberRepository: MemberRepository,
+    private sessionRepository: SessionRepository
   ) {}
 
   public async register(registerRequest: RegisterRequest): Promise<void> {
