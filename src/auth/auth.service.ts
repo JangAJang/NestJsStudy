@@ -32,8 +32,23 @@ export class AuthService {
       signInRequest.username
     );
 
-    if (this.isRightPassword(foundMember, signInRequest)) {
+    if (this.isRightPassword(foundMember, signInRequest.password)) {
       return (await this.createMembersSession(foundMember)).id;
+    }
+
+    throw new BadRequestException(
+      "로그인에 실패했습니다. 아이디와 비밀번호를 다시 확인해주세요."
+    );
+  }
+
+  public async validateMember(
+    username: string,
+    password: string
+  ): Promise<Member> {
+    const foundMember = await this.memberRepository.findByUsername(username);
+
+    if (this.isRightPassword(foundMember, password)) {
+      return foundMember;
     }
 
     throw new BadRequestException(
@@ -52,11 +67,8 @@ export class AuthService {
     await this.sessionRepository.remove(membersSessions);
   }
 
-  private async isRightPassword(
-    foundMember: Member,
-    signInRequest: SignInRequest
-  ) {
-    return await bcrypt.compare(signInRequest.password, foundMember.password);
+  private async isRightPassword(foundMember: Member, password: string) {
+    return await bcrypt.compare(password, foundMember.password);
   }
 
   private async createMembersSession(member: Member): Promise<Session> {
