@@ -8,14 +8,14 @@ import * as bcrypt from "bcrypt";
 import { Session } from "./entity/session";
 import { Member } from "src/member/entity/member";
 import { RegisterRequest } from "./dto/registerRequest";
-import { MemberRepository } from '../member/repository/member.repository';
+import { MemberRepository } from "../member/repository/member.repository";
 import { SessionRepository } from "./repository/session.repository";
 
 @Injectable()
 export class AuthService {
   constructor(
-    @Inject() private memberRepository:MemberRepository,
-    @Inject() private sessionRepository:SessionRepository,
+    @Inject() private memberRepository: MemberRepository,
+    @Inject() private sessionRepository: SessionRepository
   ) {}
 
   public async register(registerRequest: RegisterRequest): Promise<void> {
@@ -28,7 +28,9 @@ export class AuthService {
   }
 
   public async signIn(signInRequest: SignInRequest): Promise<any> {
-    const foundMember = await this.memberRepository.findByUsername(signInRequest.username);
+    const foundMember = await this.memberRepository.findByUsername(
+      signInRequest.username
+    );
 
     if (this.isRightPassword(foundMember, signInRequest)) {
       return (await this.createMembersSession(foundMember)).id;
@@ -45,15 +47,19 @@ export class AuthService {
     if (!foundSession)
       throw new UnauthorizedException("로그인 후 이용해주세요.");
 
-    const membersSessions = await this.sessionRepository.findSessionsWithSameMember(sessionId);
+    const membersSessions =
+      await this.sessionRepository.findSessionsWithSameMember(sessionId);
     await this.sessionRepository.remove(membersSessions);
   }
 
-  private async isRightPassword( foundMember: Member,signInRequest: SignInRequest ) {
+  private async isRightPassword(
+    foundMember: Member,
+    signInRequest: SignInRequest
+  ) {
     return await bcrypt.compare(signInRequest.password, foundMember.password);
   }
 
-  private async createMembersSession(member:Member):Promise<Session> {
+  private async createMembersSession(member: Member): Promise<Session> {
     return await this.sessionRepository.save(Session.byMember(member));
   }
 
