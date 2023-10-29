@@ -1,7 +1,16 @@
-import { Body, Controller, Post, Req, Res } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  HttpCode,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { Request, Response } from "express";
 import { RegisterRequest } from "./dto/registerRequest";
+import { LocalAuthenticationGuard } from "./localAuthentication.guard";
 
 @Controller("auth")
 export class AuthController {
@@ -18,6 +27,8 @@ export class AuthController {
   }
 
   @Post("signIn")
+  @HttpCode(200)
+  @UseGuards(LocalAuthenticationGuard)
   public async signIn(
     @Body() signInRequest: SignInRequest,
     @Res() response: Response
