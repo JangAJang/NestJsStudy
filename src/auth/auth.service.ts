@@ -4,18 +4,13 @@ import {
   UnauthorizedException,
 } from "@nestjs/common";
 import * as bcrypt from "bcrypt";
-import { Session } from "./entity/session";
 import { Member } from "src/member/entity/member";
 import { RegisterRequest } from "./dto/registerRequest";
 import { MemberRepository } from "../member/repository/member.repository";
-import { SessionRepository } from "./repository/session.repository";
 
 @Injectable()
 export class AuthService {
-  constructor(
-    private memberRepository: MemberRepository,
-    private sessionRepository: SessionRepository
-  ) {}
+  constructor(private memberRepository: MemberRepository) {}
 
   public async register(registerRequest: RegisterRequest): Promise<void> {
     await this.validateRegister(registerRequest);
@@ -32,7 +27,7 @@ export class AuthService {
     );
 
     if (this.isRightPassword(foundMember, signInRequest.password)) {
-      return (await this.createMembersSession(foundMember)).id;
+      return foundMember;
     }
 
     throw new BadRequestException(
@@ -56,22 +51,15 @@ export class AuthService {
   }
 
   public async logout(sessionId: number): Promise<void> {
-    const foundSession = await this.sessionRepository.findById(sessionId);
-
-    if (!foundSession)
-      throw new UnauthorizedException("로그인 후 이용해주세요.");
-
-    const membersSessions =
-      await this.sessionRepository.findSessionsWithSameMember(sessionId);
-    await this.sessionRepository.remove(membersSessions);
+    // JWT로 수정
   }
 
   private async isRightPassword(foundMember: Member, password: string) {
     return await bcrypt.compare(password, foundMember.password);
   }
 
-  private async createMembersSession(member: Member): Promise<Session> {
-    return await this.sessionRepository.save(Session.byMember(member));
+  private async createMembersSession(member: Member): Promise<void> {
+    // JWT로 수정
   }
 
   private async validateRegister(registerRequest: RegisterRequest) {
