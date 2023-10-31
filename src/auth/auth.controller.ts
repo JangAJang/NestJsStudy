@@ -10,7 +10,7 @@ import {
 import { AuthService } from "./auth.service";
 import { Request, Response } from "express";
 import { RegisterRequest } from "./dto/registerRequest";
-import { LocalAuthenticationGuard } from "./localAuthentication.guard";
+import { LocalAuthenticationGuard } from "./util/localAuthentication.guard";
 import RequestWithMember from "./dto/requestWithMember";
 
 @Controller("auth")

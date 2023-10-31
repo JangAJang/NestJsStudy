@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import { Strategy } from "passport-jwt";
-import { AuthValidator } from "./util/auth.validator";
+import { AuthValidator } from "./auth.validator";
 
 @Injectable()
 export class LocalAuthenticationGuard extends PassportStrategy(Strategy) {

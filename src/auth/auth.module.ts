@@ -5,10 +5,11 @@ import { AuthController } from "./auth.controller";
 import { Member } from "src/member/entity/member";
 import { MemberRepository } from "src/member/repository/member.repository";
 import { PassportModule } from "@nestjs/passport";
-import { LocalAuthenticationGuard } from "./localAuthentication.guard";
+import { LocalAuthenticationGuard } from "./util/localAuthentication.guard";
 import { JwtModule } from "@nestjs/jwt";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { AuthValidator } from "./util/auth.validator";
+import { TokenRepository } from "./repository/token.repository";
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { AuthValidator } from "./util/auth.validator";
     AuthService,
     LocalAuthenticationGuard,
     MemberRepository,
+    TokenRepository,
     AuthValidator,
   ],
   controllers: [AuthController],
