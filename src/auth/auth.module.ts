@@ -8,6 +8,7 @@ import { PassportModule } from "@nestjs/passport";
 import { LocalAuthenticationGuard } from "./localAuthentication.guard";
 import { JwtModule } from "@nestjs/jwt";
 import { ConfigModule, ConfigService } from "@nestjs/config";
+import { AuthValidator } from "./util/auth.validator";
 
 @Module({
   imports: [
@@ -24,7 +25,12 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
       }),
     }),
   ],
-  providers: [AuthService, LocalAuthenticationGuard, MemberRepository],
+  providers: [
+    AuthService,
+    LocalAuthenticationGuard,
+    MemberRepository,
+    AuthValidator,
+  ],
   controllers: [AuthController],
 })
 export class AuthModule {}
