@@ -1,21 +1,24 @@
-import {
-  BadRequestException,
-  Injectable,
-  UnauthorizedException,
-} from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import * as bcrypt from "bcrypt";
 import { Member } from "src/member/entity/member";
 import { RegisterRequest } from "./dto/registerRequest";
 import { MemberRepository } from "../member/repository/member.repository";
 import { JwtService } from "@nestjs/jwt";
 import { AuthValidator } from "./util/auth.validator";
+import { Payload } from "./jwt/payload.interface";
+import { Token } from "./entity/token";
+import { TokenRepository } from "./repository/token.repository";
+
+const accessTokenExpiresIn = "1h"; // 1 시간
+const refreshTokenExpiresIn = "7d"; // 7 일
 
 @Injectable()
 export class AuthService {
   constructor(
-    private memberRepository: MemberRepository,
     private jwtService: JwtService,
-    private authValidator: AuthValidator
+    private authValidator: AuthValidator,
+    private memberRepository: MemberRepository,
+    private tokenRepository: TokenRepository
   ) {}
 
   public async register(registerRequest: RegisterRequest): Promise<void> {
@@ -35,10 +38,13 @@ export class AuthService {
     if (
       this.authValidator.isRightPassword(foundMember, signInRequest.password)
     ) {
-      const payload = { sub: foundMember.id, username: foundMember.username };
+      const payload: Payload = {
+        id: foundMember.id,
+        username: foundMember.username,
+      };
 
       return {
-        access_token: await this.jwtService.signAsync(payload),
+        access_token: await this.createToken(payload),
       };
     }
     throw new BadRequestException(
@@ -46,7 +52,21 @@ export class AuthService {
     );
   }
 
-  public async logout(sessionId: number): Promise<void> {
+  public async logout(accessToken: string): Promise<void> {
     // JWT로 수정
+  }
+
+  private async createToken(payload: Payload) {
+    const accessToken = await this.signToken(payload, accessTokenExpiresIn);
+    const refreshToken = await this.signToken(payload, refreshTokenExpiresIn);
+    const token = new Token(refreshToken, accessToken);
+    this.tokenRepository.save(token);
+    return accessToken;
+  }
+
+  private async signToken(payload: Payload, expiresIn: string) {
+    return await this.jwtService.signAsync(payload, {
+      expiresIn: expiresIn,
+    });
   }
 }

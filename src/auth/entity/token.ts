@@ -2,6 +2,11 @@ import { Column, Entity, PrimaryColumn } from "typeorm";
 
 @Entity()
 export class Token {
+  constructor(refreshToken: string, accessToken: string) {
+    this.refreshToken = refreshToken;
+    this.accessToken = accessToken;
+  }
+
   @PrimaryColumn()
   readonly refreshToken: string;
 
