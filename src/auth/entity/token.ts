@@ -3,10 +3,10 @@ import { Column, Entity, PrimaryColumn } from "typeorm";
 @Entity()
 export class Token {
   @PrimaryColumn()
-  private readonly refreshToken: string;
+  readonly refreshToken: string;
 
   @Column()
-  private accessToken: string;
+  accessToken: string;
 
   isAccessTokenExpired() {
     return false;
