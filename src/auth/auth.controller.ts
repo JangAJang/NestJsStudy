@@ -11,6 +11,7 @@ import { AuthService } from "./auth.service";
 import { Request, Response } from "express";
 import { RegisterRequest } from "./dto/registerRequest";
 import { LocalAuthenticationGuard } from "./localAuthentication.guard";
+import RequestWithMember from "./dto/requestWithMember";
 
 @Controller("auth")
 export class AuthController {
@@ -30,11 +31,11 @@ export class AuthController {
   @HttpCode(200)
   @UseGuards(LocalAuthenticationGuard)
   public async signIn(
-    @Body() signInRequest: SignInRequest,
+    @Req() request: RequestWithMember,
     @Res() response: Response
   ) {
     try {
-      response.cookie("tester", await this.authService.signIn(signInRequest), {
+      response.cookie("tester", await this.authService.signIn(request.member), {
         httpOnly: true,
       });
       response.send({ message: "로그인에 성공했습니다." });
