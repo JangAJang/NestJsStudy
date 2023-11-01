@@ -10,10 +10,11 @@ import { JwtModule } from "@nestjs/jwt";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { AuthValidator } from "./util/auth.validator";
 import { TokenRepository } from "./repository/token.repository";
+import { Token } from "./entity/token";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Member]),
+    TypeOrmModule.forFeature([Member, Token]),
     PassportModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],

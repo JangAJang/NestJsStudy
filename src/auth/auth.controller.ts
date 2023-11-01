@@ -35,9 +35,13 @@ export class AuthController {
     @Res() response: Response
   ) {
     try {
-      response.cookie("tester", await this.authService.signIn(request.member), {
-        httpOnly: true,
-      });
+      response.cookie(
+        "Authorzation",
+        await this.authService.signIn(request.member),
+        {
+          httpOnly: true,
+        }
+      );
       response.send({ message: "로그인에 성공했습니다." });
       return;
     } catch (e) {
@@ -49,7 +53,7 @@ export class AuthController {
   public async logout(@Req() request: Request) {
     try {
       const [cookieName, cookieValue] = request.headers.cookie.split("=");
-      await this.authService.logout(Number(cookieValue));
+      await this.authService.logout(cookieValue);
     } catch (e) {
       return { error: e.message };
     }
