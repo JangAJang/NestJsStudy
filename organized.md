@@ -1,0 +1,65 @@
+src
+|───auth
+  |─entity
+    |─token.ts
+  |─repository
+    |─token.repository.ts
+  |─service
+    |─token.service.ts
+  |─controller
+    |─token.controller.ts
+  |─dto
+    |─token.interface.ts
+|───member
+  |─entity
+    |─member.ts
+  |─repository
+    |─member.repository.ts
+  |─service
+    |─member.service.ts
+  |─controller
+    |─member.controller.ts
+  |─dto
+    |─member.interface.ts
+|───question
+  |─entity
+    |─question.ts
+  |─repository
+    |─question.repository.ts
+  |─service
+    |─question.service.ts
+  |─controller
+    |─question.controller.ts
+  |─dto
+    |─question.interface.ts
+|───answer
+  |─entity
+    |─answer.ts
+  |─repository
+    |─answer.repository.ts
+  |─service
+    |─answer.service.ts
+  |─controller
+    |─answer.controller.ts
+  |─dto
+    |─answer.interface.ts
+|───video
+  |─entity
+    |─video.ts
+  |─repository
+    |─video.repository.ts
+  |─service
+    |─video.service.ts
+  |─controller
+    |─video.controller.ts
+  |─dto
+    |─video.interface.ts
+|─app.controller.spec.ts
+|─app.controller.ts
+|─app.module.ts
+|─app.service.ts
+└─ main.ts
+
+
+
+
