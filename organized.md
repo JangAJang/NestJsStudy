@@ -1,4 +1,13 @@
 src
+|───config
+  |─log
+  |─type_orm
+  |─multer
+|───jwt
+  |─interface
+    |─jwt.interface.ts
+  |─guard
+    |─jwt.guard.ts
 |───auth
   |─entity
     |─token.ts
@@ -10,6 +19,8 @@ src
     |─token.controller.ts
   |─dto
     |─token.interface.ts
+  |─exception
+    |─token.exception.ts
 |───member
   |─entity
     |─member.ts
@@ -21,6 +32,8 @@ src
     |─member.controller.ts
   |─dto
     |─member.interface.ts
+  |─exception
+    |─member.exception.ts
 |───question
   |─entity
     |─question.ts
@@ -32,6 +45,8 @@ src
     |─question.controller.ts
   |─dto
     |─question.interface.ts
+  |─exception
+    |─question.exception.ts
 |───answer
   |─entity
     |─answer.ts
@@ -43,6 +58,8 @@ src
     |─answer.controller.ts
   |─dto
     |─answer.interface.ts
+  |─exception
+    |─answer.exception.ts
 |───video
   |─entity
     |─video.ts
@@ -54,6 +71,8 @@ src
     |─video.controller.ts
   |─dto
     |─video.interface.ts
+  |─exception
+    |─video.exception.ts
 |─app.controller.spec.ts
 |─app.controller.ts
 |─app.module.ts
