@@ -1,9 +1,7 @@
 name: backend CI
-
 on:
   pull_request:
     branches: [feat/back]
-
 jobs:
   test:
     runs-on: ubuntu-latest
