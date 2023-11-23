@@ -6,6 +6,8 @@ import { AuthModule } from "./auth/auth.module";
 import { Member } from "./member/entity/member";
 import { JwtModule } from "@nestjs/jwt";
 import { Token } from "./auth/entity/token";
+import "dotenv/config";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 
 @Module({
   imports: [
@@ -21,9 +23,12 @@ import { Token } from "./auth/entity/token";
       autoLoadEntities: true,
     }),
     AuthModule,
-    JwtModule.register({
-      secret: "SECRET_KEY",
-      signOptions: { expiresIn: "300s" },
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async () => ({
+        secret: process.env.JWT_SECRET,
+      }),
     }),
   ],
   controllers: [AppController],

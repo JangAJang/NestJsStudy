@@ -1,8 +1,14 @@
 import { RegisterRequest } from "src/auth/dto/registerRequest";
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 
 @Entity()
-export class Member {
+export class Member extends BaseEntity {
   @PrimaryGeneratedColumn()
   readonly id: number;
 
@@ -21,6 +27,7 @@ export class Member {
     nickname: string,
     password: string
   ) {
+    super();
     this.id = id;
     this.username = username;
     this.nickname = nickname;

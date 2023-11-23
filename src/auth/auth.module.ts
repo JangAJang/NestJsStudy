@@ -11,6 +11,7 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 import { AuthValidator } from "./util/auth.validator";
 import { TokenRepository } from "./repository/token.repository";
 import { Token } from "./entity/token";
+import "dotenv/config";
 
 @Module({
   imports: [
@@ -19,11 +20,8 @@ import { Token } from "./entity/token";
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => ({
-        secret: configService.get("JWT_SECRET"),
-        signOptions: {
-          expiresIn: `${configService.get("JWT_EXPIRATION_TIME")}s`,
-        },
+      useFactory: async () => ({
+        secret: process.env.JWT_SECRET,
       }),
     }),
   ],
