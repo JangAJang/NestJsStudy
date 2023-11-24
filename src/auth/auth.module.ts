@@ -13,6 +13,7 @@ import { TokenRepository } from "./repository/token.repository";
 import { Token } from "./entity/token";
 import "dotenv/config";
 
+//이거 하나 바꾼다고 테스트하냐?
 @Module({
   imports: [
     TypeOrmModule.forFeature([Member, Token]),
