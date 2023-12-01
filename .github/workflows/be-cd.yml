@@ -28,7 +28,7 @@ jobs:
 
     steps:
       - name: Execute remote SSH commands using password
-        uses: appleboy/ssh-action@master
+        uses: self-hosted server
         with:
           host: ${{ secrets.HOST }}
           username: janghee
