@@ -1,5 +1,6 @@
 import { Prop, Schema } from "@nestjs/mongoose";
-import { HydratedDocument } from "mongoose";
+import mongoose, { HydratedDocument } from "mongoose";
+import { Team } from "src/team/entity/team";
 
 export type MemberDocument = HydratedDocument<Member>;
 
@@ -13,6 +14,9 @@ export class Member {
 
   @Prop({ required: true })
   readonly password: string;
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "Team" })
+  readonly team: Team;
 
   constructor(username: string, nickname: string, password: string) {
     this.username = username;
