@@ -1,4 +1,4 @@
-import { Prop, Schema, raw } from "@nestjs/mongoose";
+import { Prop, Schema, SchemaFactory, raw } from "@nestjs/mongoose";
 import mongoose, { HydratedDocument } from "mongoose";
 import { Team } from "src/team/entity/team";
 
@@ -41,3 +41,5 @@ export class Member {
     return new Member(username, nameInfo, password);
   }
 }
+
+export const MemberSchema = SchemaFactory.createForClass(Member);

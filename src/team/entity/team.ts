@@ -1,4 +1,4 @@
-import { Prop, Schema } from "@nestjs/mongoose";
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import mongoose, { HydratedDocument } from "mongoose";
 import { Member } from "src/member/entity/member";
 
@@ -12,3 +12,5 @@ export class Team {
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Member" }] })
   readonly members: Member[];
 }
+
+export const TeamSchema = SchemaFactory.createForClass(Team);
