@@ -1,34 +1,20 @@
-import { RegisterRequest } from "src/auth/dto/registerRequest";
-import {
-  BaseEntity,
-  Column,
-  Entity,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from "typeorm";
+import { Prop, Schema } from "@nestjs/mongoose";
+import { HydratedDocument } from "mongoose";
 
-@Entity()
-export class Member extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  readonly id: number;
+export type MemberDocument = HydratedDocument<Member>;
 
-  @Column()
+@Schema()
+export class Member {
+  @Prop({ required: true })
   readonly username: string;
 
-  @Column()
+  @Prop({ required: true })
   readonly nickname: string;
 
-  @Column()
+  @Prop({ required: true })
   readonly password: string;
 
-  constructor(
-    id: number,
-    username: string,
-    nickname: string,
-    password: string
-  ) {
-    super();
-    this.id = id;
+  constructor(username: string, nickname: string, password: string) {
     this.username = username;
     this.nickname = nickname;
     this.password = password;
@@ -38,15 +24,7 @@ export class Member extends BaseEntity {
     return this.password === password;
   }
 
-  static from(registerRequest: RegisterRequest) {
-    return Member.of(
-      registerRequest.username,
-      registerRequest.nickname,
-      registerRequest.password
-    );
-  }
-
   static of(username: string, nickname: string, password: string) {
-    return new Member(undefined, username, nickname, password);
+    return new Member(username, nickname, password);
   }
 }
