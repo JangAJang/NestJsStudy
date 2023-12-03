@@ -1,36 +1,36 @@
-import { RegisterRequest } from "src/auth/dto/registerRequest";
-import {
-  BaseEntity,
-  Column,
-  Entity,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from "typeorm";
+import { Prop, Schema, SchemaFactory, raw } from "@nestjs/mongoose";
+import mongoose, { HydratedDocument } from "mongoose";
+import { Team } from "src/team/entity/team";
+import { CreateMemberRequest } from "../dto/createMemberRequest";
 
-@Entity()
-export class Member extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  readonly id: number;
+export type MemberDocument = HydratedDocument<Member>;
 
-  @Column()
+@Schema()
+export class Member {
+  @Prop({ required: true })
   readonly username: string;
 
-  @Column()
-  readonly nickname: string;
+  @Prop(
+    raw({
+      firstName: { type: String },
+      lastName: { type: String },
+    })
+  )
+  readonly nameInfo: Record<string, any>;
 
-  @Column()
+  @Prop({ required: true })
   readonly password: string;
 
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "Team" })
+  readonly team: Team;
+
   constructor(
-    id: number,
     username: string,
-    nickname: string,
+    nameInfo: Record<string, any>,
     password: string
   ) {
-    super();
-    this.id = id;
     this.username = username;
-    this.nickname = nickname;
+    this.nameInfo = nameInfo;
     this.password = password;
   }
 
@@ -38,15 +38,21 @@ export class Member extends BaseEntity {
     return this.password === password;
   }
 
-  static from(registerRequest: RegisterRequest) {
-    return Member.of(
-      registerRequest.username,
-      registerRequest.nickname,
-      registerRequest.password
-    );
+  static of(username: string, nameInfo: Record<string, any>, password: string) {
+    return new Member(username, nameInfo, password);
   }
 
-  static of(username: string, nickname: string, password: string) {
-    return new Member(undefined, username, nickname, password);
+  static from(createMemberRequest: CreateMemberRequest) {
+    const nameInfo = {
+      firstName: createMemberRequest.firstName,
+      lastName: createMemberRequest.lastName,
+    };
+    return new Member(
+      createMemberRequest.username,
+      nameInfo,
+      createMemberRequest.password
+    );
   }
 }
+
+export const MemberSchema = SchemaFactory.createForClass(Member);

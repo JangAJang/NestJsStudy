@@ -1,22 +1,21 @@
-export class RegisterRequest {
+export class CreateMemberRequest {
   username: string;
-  nickname: string;
+  firstName: string;
+  lastName: string;
   password: string;
   passwordCheck: string;
 
   constructor(
     username: string,
-    nickname: string,
+    firstName: string,
+    lastName: string,
     password: string,
     passwordCheck: string
   ) {
     this.username = username;
-    this.nickname = nickname;
+    this.firstName = firstName;
+    this.lastName = lastName;
     this.password = password;
     this.passwordCheck = passwordCheck;
-  }
-
-  isValidPassword() {
-    return this.password === this.passwordCheck;
   }
 }
