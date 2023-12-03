@@ -1,4 +1,4 @@
-import { Prop, Schema } from "@nestjs/mongoose";
+import { Prop, Schema, raw } from "@nestjs/mongoose";
 import mongoose, { HydratedDocument } from "mongoose";
 import { Team } from "src/team/entity/team";
 
@@ -9,8 +9,13 @@ export class Member {
   @Prop({ required: true })
   readonly username: string;
 
-  @Prop({ required: true })
-  readonly nickname: string;
+  @Prop(
+    raw({
+      firstName: { type: String },
+      lastName: { type: String },
+    })
+  )
+  readonly nameInfo: Record<string, any>;
 
   @Prop({ required: true })
   readonly password: string;
@@ -18,9 +23,13 @@ export class Member {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "Team" })
   readonly team: Team;
 
-  constructor(username: string, nickname: string, password: string) {
+  constructor(
+    username: string,
+    nameInfo: Record<string, any>,
+    password: string
+  ) {
     this.username = username;
-    this.nickname = nickname;
+    this.nameInfo = nameInfo;
     this.password = password;
   }
 
@@ -28,7 +37,7 @@ export class Member {
     return this.password === password;
   }
 
-  static of(username: string, nickname: string, password: string) {
-    return new Member(username, nickname, password);
+  static of(username: string, nameInfo: Record<string, any>, password: string) {
+    return new Member(username, nameInfo, password);
   }
 }
