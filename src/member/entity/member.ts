@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory, raw } from "@nestjs/mongoose";
 import mongoose, { HydratedDocument } from "mongoose";
 import { Team } from "src/team/entity/team";
+import { CreateMemberRequest } from "../dto/createMemberRequest";
 
 export type MemberDocument = HydratedDocument<Member>;
 
@@ -39,6 +40,18 @@ export class Member {
 
   static of(username: string, nameInfo: Record<string, any>, password: string) {
     return new Member(username, nameInfo, password);
+  }
+
+  static from(createMemberRequest: CreateMemberRequest) {
+    const nameInfo = {
+      firstName: createMemberRequest.firstName,
+      lastName: createMemberRequest.lastName,
+    };
+    return new Member(
+      createMemberRequest.username,
+      nameInfo,
+      createMemberRequest.password
+    );
   }
 }
 
